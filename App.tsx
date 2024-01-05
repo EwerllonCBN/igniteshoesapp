@@ -1,26 +1,35 @@
+import { useEffect } from 'react'
+import { StatusBar, Platform } from 'react-native'
 import { OneSignal } from 'react-native-onesignal'
-import { Platform } from 'react-native'
+import { NativeBaseProvider } from 'native-base'
+import {
+  useFonts,
+  Roboto_400Regular,
+  Roboto_700Bold
+} from '@expo-google-fonts/roboto'
 
-export default function onesignalInitialize() {
-  const {
-    EXPO_PUBLIC_ONE_SIGNAL_APP_ID_ANDROID,
-    EXPO_PUBLIC_ONE_SIGNAL_APP_ID_IOS
-  } = process.env
+import { Routes } from './src/routes'
 
-  const oneSignalAppId =
-    Platform.OS === 'ios'
-      ? EXPO_PUBLIC_ONE_SIGNAL_APP_ID_IOS
-      : EXPO_PUBLIC_ONE_SIGNAL_APP_ID_ANDROID
+import { THEME } from './src/theme'
+import { Loading } from './src/components/Loading'
 
-  if (oneSignalAppId) {
-    OneSignal.initialize(oneSignalAppId)
-  }
+import { CartContextProvider } from './src/contexts/CartContext'
 
-  if (Platform.OS === 'ios') {
-    OneSignal.Notifications.canRequestPermission().then(response => {
-      if (response) {
-        OneSignal.Notifications.requestPermission(true)
-      }
-    })
-  }
+OneSignal.initialize('5d5b81d848ab2cd271633ac7ca212453fcff61a5')
+
+export default function App() {
+  const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold })
+
+  return (
+    <NativeBaseProvider theme={THEME}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <CartContextProvider>
+        {fontsLoaded ? <Routes /> : <Loading />}
+      </CartContextProvider>
+    </NativeBaseProvider>
+  )
 }
