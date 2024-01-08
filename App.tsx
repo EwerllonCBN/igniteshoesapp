@@ -15,7 +15,9 @@ import { Loading } from './src/components/Loading'
 
 import { CartContextProvider } from './src/contexts/CartContext'
 
-OneSignal.initialize('5d5b81d848ab2cd271633ac7ca212453fcff61a5')
+OneSignal.initialize('94ae8deb-8037-41ef-a30a-e246e5c2cc4a')
+
+OneSignal.User.addEmail('ewerllon_cristian@hotmail.com')
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold })
